@@ -28,7 +28,7 @@ public class DeviceOn extends Shop {
 	@Setting
 	private Location<World> lever;
 	@Setting
-	private int price;
+	private float price;
 
 	public DeviceOn() {
 	}

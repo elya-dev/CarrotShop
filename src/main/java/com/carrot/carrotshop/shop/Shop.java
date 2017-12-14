@@ -165,16 +165,20 @@ public abstract class Shop {
 		currency = first;
 	}
 
-	protected final String formatPrice(int price) {
-		switch (price) {
-		case 0:
+	protected final String formatPrice(float price) {
+
+		if(price == 0)
+		{
 			return "free";
-		case 1:
+		}
+		else if(price == 1)
+		{
 			return price + " " + getCurrency().getDisplayName().toPlain();
-		default:
+		}
+		else{
 			return price + " " + getCurrency().getPluralDisplayName().toPlain();
 		}
-
+		
 	}
 
 	private final void setFirstLineColor(TextColor color) {
@@ -198,15 +202,16 @@ public abstract class Shop {
 
 	}
 
-	static protected final int getPrice(Location<World> location) {
+	static protected final float getPrice(Location<World> location) {
 		Optional<TileEntity> sign = location.getTileEntity();
 		if (sign.isPresent() && sign.get().supports(SignData.class)) {
 			Optional<SignData> data = sign.get().get(SignData.class);
+			
 			if (data.isPresent()) {
-				String priceLine = data.get().lines().get(3).toPlain().replaceAll("[^\\d]", "");
+				String priceLine = data.get().lines().get(3).toPlain().replaceAll("[^\\d|\\.]", "");
 				if (priceLine.length() == 0)
 					return 0;
-				return Integer.parseInt(priceLine);
+				return Float.parseFloat(priceLine);
 			}
 		}
 		return -1;
